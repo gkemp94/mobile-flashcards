@@ -1,1 +1,1 @@
-export const FLASHCARDS_STORAGE_KEY = 'MobileFlashcards:Flashcards';
+export const FLASHCARDS_STORAGE_KEY = '@MobileFlashcards:Flashcards';

@@ -1,16 +1,23 @@
 import { AsyncStorage } from 'react-native';
-import FLASHCARDS_STORAGE_KEY from './helpers';
+import { FLASHCARDS_STORAGE_KEY } from './helpers';
+import data from './data.json';
 
 export function flushPendingRequests() {
     AsyncStorage.flushGetRequests();
 }
 
 export function getDecks () {
+    console.log(FLASHCARDS_STORAGE_KEY);
     return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)
-      .then((results) => {
-          return JSON.parse(results);
-        }).catch((e) => {
-            console.error(e);
+        .then((results) => {
+            if(!results) {
+                AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(data))
+                    .then((results) => {
+                        return getDecks()
+                    })
+            } else {
+                return JSON.parse(results);
+            }
         });
 }
 
