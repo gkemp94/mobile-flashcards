@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Form, Item, Input, Label, Button} from 'native-base';
 
 class NewCardView extends React.Component {
@@ -56,7 +56,7 @@ class NewCardView extends React.Component {
           >
             <Text>Add to Deck & Create New Card</Text>
           </Button>
-                    <Button 
+          <Button 
             block 
             light 
             style={{margin: 10}}
@@ -69,14 +69,5 @@ class NewCardView extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#aaa',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default NewCardView;

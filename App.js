@@ -5,6 +5,7 @@ import DeckList from './components/DeckList';
 import NewDeckView from './components/NewDeckView';
 import DeckView from './components/DeckView';
 import NewCardView from './components/NewCardView';
+import QuizView from './components/QuizView';
 
 const RootStack = createStackNavigator({
   Decks: {
@@ -18,6 +19,9 @@ const RootStack = createStackNavigator({
   }, 
   NewCard: {
     screen: NewCardView
+  },
+  Quiz: {
+    screen: QuizView
   }
 });
 

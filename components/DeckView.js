@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
-import { List, ListItem, Text, Icon, Button, Left, Right } from 'native-base';
+import { StyleSheet, View } from 'react-native';
+import { Text, Icon, Button } from 'native-base';
 
 class DeckView extends React.Component {
     static navigationOptions = ({ navigation, screenProps }) => {
@@ -28,7 +28,7 @@ class DeckView extends React.Component {
     if(deck) {
         return (
       <View>
-      <Text>No. Cards: {deck.questions.length} </Text>
+      <Text style={styles.header}>No. Cards: {deck.questions.length} </Text>
         <Button 
             block 
             light 
@@ -41,7 +41,7 @@ class DeckView extends React.Component {
             block 
             light 
             style={{margin: 10}}
-            onPress={() => this.handleSubmit()}
+            onPress={() => this.props.navigation.navigate('Quiz', {title: key})}
         >
         <Text>Start a Quiz</Text>
         </Button>
@@ -57,5 +57,13 @@ class DeckView extends React.Component {
     
   }
 }
+
+const styles = StyleSheet.create({
+    header: {
+        textAlign: 'center',
+        fontSize: 24,
+        padding: 10,
+    }
+})
 
 export default DeckView;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Form, Item, Input, Label, Button} from 'native-base';
 
 class NewDeckView extends React.Component {
@@ -7,11 +7,13 @@ class NewDeckView extends React.Component {
     title: "",
     error: "",
   }
+  
   static navigationOptions = ({ navigation }) => {
       return {
           title: "New Deck",
       }
   };
+  
   handleSubmit() {
     const keys = Object.keys(this.props.screenProps.decks);
     
@@ -30,6 +32,7 @@ class NewDeckView extends React.Component {
     }
 
   }
+  
   render() {
     return (
       <View>
@@ -55,14 +58,5 @@ class NewDeckView extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#aaa',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default NewDeckView;
