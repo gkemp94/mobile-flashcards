@@ -7,7 +7,6 @@ export function flushPendingRequests() {
 }
 
 export function getDecks () {
-    console.log(FLASHCARDS_STORAGE_KEY);
     return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)
         .then((results) => {
             if(!results) {
@@ -36,7 +35,8 @@ export function saveDeckTitle({ title }) {
             title,
             questions: []
         }
-    })).catch((e) => {
+    }))
+    .catch((e) => {
         console.error(e);
     })
 }
@@ -47,5 +47,15 @@ export function addCardToDeck({ title, card }) {
             const data = JSON.parse(results);
             data[title].questions.push(card);
             AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(data))
+        })
+}
+
+export function deleteDeck({title}) {
+    return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)
+        .then((results) => {
+            const data = JSON.parse(results);
+            data[title] = undefined;
+            delete data[title];
+            return AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(data))
         })
 }
