@@ -59,3 +59,11 @@ export function deleteDeck({title}) {
             return AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(data))
         })
 }
+
+
+
+export function toggleNotification(key) {
+    // (1) Ask for permission if not given, or send notification
+    // (2) Determine if key is on or off
+    // (3) Set opposite and notify component of change 
+}
