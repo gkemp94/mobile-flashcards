@@ -27,10 +27,12 @@ class DeckView extends React.Component {
 
     toggleNotification() {
         const key = this.props.navigation.getParam('key');
-        this.props.screenProps.toggleNotification(key)
-            .then((results) => this.setState({
-                info: results.info,
-            }));
+        toggleNotification(key).then((results) => {
+            this.setState({
+                info: results.info
+            })
+        })
+        
     }
 
   render() {
@@ -63,9 +65,9 @@ class DeckView extends React.Component {
             style={{margin: 10}}
             onPress={() => this.toggleNotification()}
         >
-        <Text>Start a Quiz</Text>
+        <Text>Toggle Notification</Text>
         </Button>
-        <Text style={{color: '#green',textAlign: 'center'}}>{this.state.info}</Text>
+        <Text style={{color: 'green',textAlign: 'center'}}>{this.state.info}</Text>
       </View>
     );
     } else {

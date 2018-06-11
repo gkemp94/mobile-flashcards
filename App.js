@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
-import { getDecks, saveDeckTitle, deleteDeck, addCardToDeck } from './utils/api';
+import { getDecks, saveDeckTitle, deleteDeck, addCardToDeck, toggleNotification } from './utils/api';
 import DeckList from './components/DeckList';
 import NewDeckView from './components/NewDeckView';
 import DeckView from './components/DeckView';
@@ -43,6 +43,7 @@ class App extends React.Component {
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     });
+    toggleNotification().then(() => toggleNotification())
   }
   
   async saveDeckTitle(title, cb) {

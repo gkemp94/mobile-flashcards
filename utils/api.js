@@ -1,6 +1,10 @@
 import { AsyncStorage } from 'react-native';
-import { FLASHCARDS_STORAGE_KEY } from './helpers';
+import { Notifications, Permissions } from 'expo'
+
 import data from './data.json';
+
+const FLASHCARDS_STORAGE_KEY = '@MobileFlashcards:Flashcards';
+const NOTIFICATION_KEY = '@MobileFlashcards:Notifications';
 
 export function flushPendingRequests() {
     AsyncStorage.flushGetRequests();
@@ -61,9 +65,120 @@ export function deleteDeck({title}) {
 }
 
 
+function createNotification () {
+  return {
+    title: 'Time to Practice Decks!',
+    body: "It's time to practice your flashcards",
+    ios: {
+      sound: true,
+    },
+    android: {
+      sound: true,
+      priority: 'high',
+      sticky: false,
+      vibrate: true,
+    }
+  }
+}
 
-export function toggleNotification(key) {
-    // (1) Ask for permission if not given, or send notification
-    // (2) Determine if key is on or off
-    // (3) Set opposite and notify component of change 
+export function clearLocalNotification () {
+  return AsyncStorage.removeItem(NOTIFICATION_KEY)
+    .then(Notifications.cancelAllScheduledNotificationsAsync)
+}
+
+export function toggleNotification() {
+  return AsyncStorage.getItem(NOTIFICATION_KEY)
+    .then(JSON.parse)
+    .then((notificationsActivated) => {
+        if (notificationsActivated) {
+            return Notifications.cancelAllScheduledNotificationsAsync()
+            .then(() => {
+                return AsyncStorage.setItem(
+                    NOTIFICATION_KEY, 
+                    JSON.stringify(false)).then(() => {
+                        return {
+                            info: "Notifications Deactivated"
+                        }
+                });
+            });
+        } else {
+            return Permissions.askAsync(Permissions.NOTIFICATIONS)
+                .then(({status}) => {
+                    if(status === "granted") {
+                        let tomorrow = new Date()
+                        tomorrow.setDate(tomorrow.getDate() + 1)
+                        tomorrow.setHours(20)
+                        tomorrow.setMinutes(0)
+
+                        return Notifications.scheduleLocalNotificationAsync(
+                            createNotification(),
+                                {
+                                    time: tomorrow,
+                                    repeat: 'day',
+                                }).then(() => {
+                            return AsyncStorage.setItem(
+                            NOTIFICATION_KEY, 
+                            JSON.stringify(true)).then(() => {
+                                return {
+                                    info: "Notifications Activated"
+                                }
+                            }); 
+                                })
+
+                    } else {
+                        return {
+                            info: "Permissions Not Granted"
+                        }
+                    }
+  
+                })
+        }
+    });
+    /*
+    .then((data) => {
+      if (data === null) {
+        Permissions.askAsync(Permissions.NOTIFICATIONS)
+          .then(({ status }) => {
+            if (status === 'granted') {
+              
+              let tomorrow = new Date()
+              tomorrow.setDate(tomorrow.getDate() + 1)
+              tomorrow.setHours(20)
+              tomorrow.setMinutes(0)
+
+              Notifications.scheduleLocalNotificationAsync(
+                createNotification(),
+                {
+                  time: tomorrow,
+                  repeat: 'day',
+                }
+              )
+
+              return AsyncStorage.setItem(
+                    NOTIFICATION_KEY, 
+                    JSON.stringify(true)).then(() => {
+                        return {
+                            info: "Notifications Activated"
+                        }
+                    })
+            } else {
+                return {
+                    info: "We don't have permissions to notify you :("
+                }
+            }
+          })
+      } else {
+          return Notifications.cancelAllScheduledNotificationsAsync()
+            .then(() => {
+                return AsyncStorage.setItem(
+                    NOTIFICATION_KEY, 
+                    JSON.stringify(false)).then(() => {
+                        return {
+                            info: "Notifications Removed"
+                        }
+                    })
+            })
+      }
+    })
+    */
 }
